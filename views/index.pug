@@ -1,0 +1,105 @@
+doctype html
+html
+
+  head
+    title DEVDEX
+    link(rel='icon', href='images/favicon.ico', type='image/x-icon')
+    link(rel='preconnect' href='https://fonts.googleapis.com')
+    link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;500&display=swap' rel='stylesheet')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/scripts/increment.js')
+
+  body
+
+    nav.navbar.navbar-expand-lg.navbar-dark.shadow-lg
+      a.navbar-brand.mx-auto(href='')
+        img(src='images/mainlogo.svg', alt='Main Logo', height='50px')
+
+    .container.mt-5
+      if errorMessage
+        .alert.alert-danger #{errorMessage}
+      else if maindevdex.length > 0
+        body
+          .container.my-5
+            .row.justify-content-center
+              .col-10.text-center
+                h1.large-header Browse an entire catalog of developer tools, instantly.
+
+          .container.rounded-dark-bg
+            .row.align-items-center
+              .col-md-6
+                h1.med-header Most Viewed Tools
+              .col-md-6.d-flex.justify-content-end.search-box
+                form(id='searchForm', action='/search', method='POST')
+                  input.searchQuery(type='text', name='searchQuery', id='searchQuery', placeholder='Search')
+
+
+          .container.initial-cards
+            .row.justify-content-center.justify-content-sm-start
+              each entry in maindevdex
+                .col-12.col-md-6.col-lg-4.col-xxl-3
+                  .card.mb-4
+                    img.card-img-top(src=`data:image/jpeg;base64,${entry.icon}` alt='Card image cap')
+                    .card-body.card-text-color
+                      h5.card-title.mb-3.text-center.light-(style='font-size: 1.5rem font-weight: 500') #{entry.name}
+                      p.card-text.text-center.kanit-font #{entry.description}
+                      a.btn.btn-primary.card-btn.increment-btn(data-id=entry.id, href=entry.url, target='_blank') Visit Site
+
+          .container.search-results(id='searchResultsContainer', style='display: none;')
+
+      else
+        .alert.alert-warning No records found.
+
+script.
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.querySelector('#searchForm');
+    const searchResultsContainer = document.querySelector('#searchResultsContainer');
+    const initialCardsContainer = document.querySelector('.initial-cards');
+    const searchInput = document.querySelector('#searchQuery');
+    searchInput.value = '';
+
+    searchForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      performSearch();
+    });
+
+    searchInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        performSearch();
+      }
+    });
+
+    async function performSearch() {
+      const searchQuery = searchInput.value.trim();
+
+      if (searchQuery === '') {
+        // Clear search results and show initial cards
+        searchResultsContainer.innerHTML = '';
+        initialCardsContainer.style.display = 'block';
+        searchResultsContainer.style.display = 'none'; // Hide search results
+        return;
+      }
+
+      try {
+        const response = await fetch('/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `searchQuery=${encodeURIComponent(searchQuery)}`,
+        });
+
+        const searchResultsHTML = await response.text();
+
+        // Replace search results container content if results are available
+        searchResultsContainer.innerHTML = searchResultsHTML;
+        initialCardsContainer.style.display = 'none'; // Hide initial cards
+        searchResultsContainer.style.display = 'block'; // Show search results
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    }
+  });

@@ -1,0 +1,64 @@
+doctype html
+html
+
+    head
+        title Search Results
+        link(rel='icon', href='images/favicon.ico', type='image/x-icon')
+        link(rel='preconnect' href='https://fonts.googleapis.com')
+        link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+        link(href='https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;500&display=swap' rel='stylesheet')
+        link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        script(src='/scripts/increment.js')
+
+    body
+        .row.justify-content-center.justify-content-sm-start
+            if searchResults
+                each entry in searchResults
+                    .col-12.col-md-6.col-lg-4.col-xxl-3
+                        .card.mb-4
+                            img.card-img-top(src=`data:image/jpeg;base64,${entry.icon}` alt='Card image cap')
+                            .card-body.card-text-color
+                                h5.card-title.mb-3.text-center.light-(style='font-size: 1.5rem font-weight: 500') #{entry.name}
+                                p.card-text.text-center.kanit-font #{entry.description}
+                                a.btn.btn-primary.card-btn.increment-btn(data-id=entry.id, href=entry.url, target='_blank') Visit Site
+
+
+        script.
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchForm = document.querySelector('#searchForm');
+                const searchInput = document.querySelector('#searchQuery');
+
+                searchForm.addEventListener('submit', async function (event) {
+                    event.preventDefault();
+                    performSearch();
+                });
+
+                searchInput.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        performSearch();
+                    }
+                });
+
+                async function performSearch() {
+                    const searchQuery = searchInput.value.trim();
+
+                    try {
+                        const response = await fetch('/search', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `searchQuery=${encodeURIComponent(searchQuery)}`,
+                        });
+
+                        const searchResultsHTML = await response.text();
+
+                        searchResultsContainer.innerHTML = searchResultsHTML;
+
+                    } catch (error) {
+                        console.error('Error fetching search results:', error);
+                    }
+                }
+            });

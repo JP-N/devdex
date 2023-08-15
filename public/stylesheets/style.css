@@ -1,0 +1,109 @@
+
+body {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+  color: #FFFFFF;
+}
+
+
+a {
+  color: #00B7FF;
+}
+
+@font-face {
+  font-family: 'Kanit';
+
+}
+.kanit-font {
+  font-family: 'Kanit', sans-serif;
+}
+
+.card-text-color {
+  color: #FFFFFF;
+}
+
+.navbar {
+  background-color: #333;
+  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+table {
+  margin: 0 auto;
+  background-color: #444;
+}
+
+.card {
+  background-color: #333;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-btn {
+  width: 100%;
+  background-color: #09C6F0;
+  border-color: #09C6F0;
+  color: #E8F1FA;
+}
+
+.searchQuery {
+  border: 2px solid white;
+  background: none;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.searchQuery::placeholder {
+  color: white;
+}
+
+.searchQuery:focus {
+  border-color: #09C6F0; /* Change border color on focus */
+  outline: none; /* Remove the default focus outline */
+}
+
+.large-header {
+  font-size: 4rem;
+  color: #0090ec;
+
+  background: hsla(314, 100%, 80%, 1);
+
+  background: linear-gradient(45deg, hsla(314, 100%, 80%, 1) 16%, hsla(195, 97%, 53%, 1) 59%, hsla(176, 100%, 61%, 1) 100%);
+
+  background: -moz-linear-gradient(45deg, hsla(314, 100%, 80%, 1) 16%, hsla(195, 97%, 53%, 1) 59%, hsla(176, 100%, 61%, 1) 100%);
+
+  background: -webkit-linear-gradient(45deg, hsla(314, 100%, 80%, 1) 16%, hsla(195, 97%, 53%, 1) 59%, hsla(176, 100%, 61%, 1) 100%);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+
+.rounded-dark-bg {
+  background-color: #333; /* Set your desired background color */
+  border-radius: 10px; /* Set your desired border radius */
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.med-header {
+  font-size: 3rem;
+  color: #FFF;
+  background-color: #333;
+}
+
+.kanit-font {
+  font-family: 'Kanit', sans-serif;
+}
+
+.light {
+  background-color: #f8f9fa;
+}
